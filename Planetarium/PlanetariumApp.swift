@@ -2,7 +2,7 @@
 //  PlanetariumApp.swift
 //  Planetarium
 //
-//  Created by CS3714 on 12/1/24.
+//  Created by Tejas Navada on 12/1/24.
 //
 
 import SwiftUI
