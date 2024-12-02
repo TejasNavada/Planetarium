@@ -10,23 +10,22 @@ import SwiftData
 
 @main
 struct PlanetariumApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    
+    init() {
+        createDatabase()
+    }
+    @AppStorage("darkMode") private var darkMode = false
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                // Change the color mode of the entire app to Dark or Light
+                .preferredColorScheme(darkMode ? .dark : .light)
+            
+                /*
+                 Inject the Model Container into the environment so that you can access its Model Context
+                 in a SwiftUI file by using @Environment(\.modelContext) private var modelContext
+                 */
+                .modelContainer(for: [Photo.self, Video.self, Audio.self], isUndoEnabled: true)
         }
-        .modelContainer(sharedModelContainer)
-    }
-}
+    }}
