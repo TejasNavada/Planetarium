@@ -14,6 +14,7 @@ public struct EventStruct: Decodable {
     var geometry: [Geometry]
     var description: String?
     let categories: [Category]
+    var sources: [Source]
 }
 
 public struct Geometry: Decodable {
@@ -29,5 +30,11 @@ public struct Category: Decodable {
     
     var id: String
     var title: String
+    
+}
+public struct Source: Decodable {
+    
+    var id: String
+    var url: String
     
 }

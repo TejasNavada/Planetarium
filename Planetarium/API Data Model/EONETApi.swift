@@ -60,6 +60,20 @@ public func getEventFromApi(category: String?, days: String) -> [EventStruct] {
                     }
                 }
             }
+            var sources = [Source]()
+            if let sourcesArray = eventDataDictionary["sources"] as? [[String: Any]] {
+                for sourceDict in sourcesArray {
+                    if let id = sourceDict["id"] as? String, let url = sourceDict["url"] as? String {
+                        if(id == "GDACS"){
+                            let cleanedURL = url.replacingOccurrences(of: "amp;", with: "")
+                            sources.append(Source(id: id, url: cleanedURL))
+                        }
+                        else{
+                            sources.append(Source(id: id, url: url))
+                        }
+                    }
+                }
+            }
             
             var geometry = [Geometry]()
             if let geometryArray = eventDataDictionary["geometry"] as? [[String: Any]] {
@@ -76,7 +90,7 @@ public func getEventFromApi(category: String?, days: String) -> [EventStruct] {
                 }
             }
             
-            let event = EventStruct(title: title, geometry: geometry, description: description, categories: categories)
+            let event = EventStruct(title: title, geometry: geometry, description: description, categories: categories, sources:sources)
             foundEventsList.append(event)
             
         }
