@@ -18,20 +18,83 @@ struct EventLocation: Identifiable {
 struct EventMap: View {
     @State private var listOfEvents: [EventStruct] = []
     @State private var mapPosition: MapCameraPosition = .automatic
-    @State private var numDays = "20"
+    @State private var selectedCategory: String = ""
+    @State private var daysFilter: String = "100"
+    @FocusState private var isFieldFocused: Bool
+    
+    let categories = ["All", "Earthquakes", "Volcanoes", "Wildfires", "Drought", "Floods", "Hurricanes"]
     
     var body: some View {
         NavigationStack {
-            eventAnnotations
-                .navigationTitle("Natural Event Tracker")
-                .toolbarTitleDisplayMode(.inline)
-                .onAppear {
-                    loadEvents()
-                }
-            
+            ZStack(alignment: .topTrailing) {
+                eventAnnotations
+                filterBox
+                    .padding()
+            }
+            .navigationTitle("Natural Event Tracker")
+            .toolbarTitleDisplayMode(.inline)
+            .onAppear {
+                loadEvents()
+            }
+            .onChange(of: selectedCategory) { newValue in
+                loadEvents()
+            }
+            .onChange(of: daysFilter) { newValue in
+                loadEvents()
+            }
             
         }
     }
+    
+    var filterBox: some View {
+        VStack(spacing: 10) {
+            Menu {
+                ForEach(categories, id: \.self) { category in
+                    Button(action: {
+                        if category == "All" {
+                            selectedCategory = ""
+                        } else {
+                            selectedCategory = category
+                        }
+                    }) {
+                        Text(category)
+                    }
+                }
+            } label: {
+                HStack(spacing: 5) {
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                    Text(selectedCategory.isEmpty ? "Select" : selectedCategory)
+                        .font(.caption)
+                }
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 8)
+            .background(Color.white.opacity(0.9))
+            .cornerRadius(8)
+            .shadow(radius: 3)
+            
+            HStack {
+                Text("Days:")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                TextField("Enter Days Prior", text: $daysFilter)
+                    .keyboardType(.numberPad)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 100)
+                    .focused($isFieldFocused)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 8)
+            .background(Color.white.opacity(0.9))
+            .cornerRadius(8)
+            .shadow(radius: 3)
+        }
+        
+        
+    }
+    
     
     var eventAnnotations: some View {
         var annotations = [EventLocation]()
@@ -45,75 +108,58 @@ struct EventMap: View {
         }
         
         return AnyView(
-            ZStack(alignment: .topLeading){
-                Map(position: $mapPosition) {
-                    ForEach(annotations) { loc in
-                        Annotation(loc.event.title, coordinate: loc.coordinate) {
-                            EventAnnotationView(event: loc.event)
-                        }
+            Map(position: $mapPosition) {
+                ForEach(annotations) { loc in
+                    Annotation(loc.event.title, coordinate: loc.coordinate) {
+                        EventAnnotationView(event: loc.event)
                     }
                 }
-                .mapStyle(.standard)
-                HStack(alignment: .firstTextBaseline) {
-                    Text("Enter Days into the past")
-                        .padding(.top)
-                        .padding(.leading)
-                    TextField("Enter Number of Days", text: $numDays)
-                        .keyboardType(.numberPad)
-                        .onChange(of: numDays) { newValue in
-                            // Validate that the input is a valid number
-                            if let _ = Int(newValue) {
-                                // Valid number, do nothing
-                                loadEvents()
-                            } else {
-                                // Invalid input, reset the value to the previous valid input
-                                numDays = String(newValue.dropLast())
-                            }
-                        }
-                        .padding()
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .background(Color.clear)  // Transparent background
-                        .frame(maxWidth: 60)
-                        .cornerRadius(8) // Add rounded corners
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.white, lineWidth: 2) //  Add border for visibility
-                        )
-                }
-                .background(Color.white.opacity(0.4))
-                .cornerRadius(10)
-                .padding()
             }
-            
+            .mapStyle(.standard)
         )
     }
     
     private func loadEvents() {
-        listOfEvents = getEventFromApi(category: nil, days: numDays)
+        listOfEvents = getEventFromApi(category: selectedCategory, days: daysFilter)
         
         if listOfEvents.isEmpty {
-                print("No events were retrieved.")
-            } else {
-                print("\(listOfEvents.count) events retrieved.")
-            }
-        
-        if let firstEvent = listOfEvents.first,
-           let firstGeometry = firstEvent.geometry.first {
-            mapPosition = .region(MKCoordinateRegion(
-                center: CLLocationCoordinate2D(
-                    latitude: firstGeometry.coordinates[1],
-                    longitude: firstGeometry.coordinates[0]
-                ),
-                span: MKCoordinateSpan(latitudeDelta: 180.0, longitudeDelta: 360.0
-                )
-            ))
-        } else {
+            print("No events were retrieved.")
+
             mapPosition = .region(MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0),
                 span: MKCoordinateSpan(latitudeDelta: 180.0, longitudeDelta: 360.0)
             ))
+        } else {
+            print("\(listOfEvents.count) events retrieved.")
+            
+            let coordinates = listOfEvents.compactMap { event -> CLLocationCoordinate2D? in
+                guard let firstGeometry = event.geometry.first, firstGeometry.coordinates.count >= 2 else {
+                    return nil
+                }
+                return CLLocationCoordinate2D(latitude: firstGeometry.coordinates[1], longitude: firstGeometry.coordinates[0])
+            }
+            
+            let latitudes = coordinates.map { $0.latitude }
+            let longitudes = coordinates.map { $0.longitude }
+            
+            guard let minLat = latitudes.min(), let maxLat = latitudes.max(),
+                  let minLon = longitudes.min(), let maxLon = longitudes.max() else {
+                return
+            }
+            
+            let center = CLLocationCoordinate2D(
+                latitude: (minLat + maxLat) / 2,
+                longitude: (minLon + maxLon) / 2
+            )
+            let span = MKCoordinateSpan(
+                latitudeDelta: max(0.05, (maxLat - minLat) * 1.2),
+                longitudeDelta: max(0.05, (maxLon - minLon) * 1.2)
+            )
+            
+            mapPosition = .region(MKCoordinateRegion(center: center, span: span))
         }
     }
+
 
 }
 
