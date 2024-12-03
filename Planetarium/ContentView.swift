@@ -25,19 +25,19 @@ struct ContentView: View {
                 
             }
             Tab("Database Images in Slider", systemImage: "photo.on.rectangle.angled.fill") {
-                
+                Photos()
             }
             Tab("Database Videos in Image Grid", systemImage: "square.grid.3x3.fill") {
-                
+                PhotosGrid()
             }
             Tab("Search Database", systemImage: "rectangle.and.text.magnifyingglass") {
-                //SearchCocktailByCategoryAPI()
+                SearchDatabase()
             }
             Tab("Search Nasa Library API", systemImage: "doc.text.magnifyingglass") {
                 SearchNasaApi()
             }
             Tab("Settings", systemImage: "gear") {
-                //Settings()
+                Settings()
             }
         }   // End of TabView
         .tabViewStyle(.sidebarAdaptable)
