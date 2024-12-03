@@ -18,6 +18,7 @@ struct EventLocation: Identifiable {
 struct EventMap: View {
     @State private var listOfEvents: [EventStruct] = []
     @State private var mapPosition: MapCameraPosition = .automatic
+    @State private var numDays = "20"
     
     var body: some View {
         NavigationStack {
@@ -44,19 +45,51 @@ struct EventMap: View {
         }
         
         return AnyView(
-            Map(position: $mapPosition) {
-                ForEach(annotations) { loc in
-                    Annotation(loc.event.title, coordinate: loc.coordinate) {
-                        EventAnnotationView(event: loc.event)
+            ZStack(alignment: .topLeading){
+                Map(position: $mapPosition) {
+                    ForEach(annotations) { loc in
+                        Annotation(loc.event.title, coordinate: loc.coordinate) {
+                            EventAnnotationView(event: loc.event)
+                        }
                     }
                 }
+                .mapStyle(.standard)
+                HStack(alignment: .firstTextBaseline) {
+                    Text("Enter Days into the past")
+                        .padding(.top)
+                        .padding(.leading)
+                    TextField("Enter Number of Days", text: $numDays)
+                        .keyboardType(.numberPad)
+                        .onChange(of: numDays) { newValue in
+                            // Validate that the input is a valid number
+                            if let _ = Int(newValue) {
+                                // Valid number, do nothing
+                                loadEvents()
+                            } else {
+                                // Invalid input, reset the value to the previous valid input
+                                numDays = String(newValue.dropLast())
+                            }
+                        }
+                        .padding()
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .background(Color.clear)  // Transparent background
+                        .frame(maxWidth: 60)
+                        .cornerRadius(8) // Add rounded corners
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.white, lineWidth: 2) //  Add border for visibility
+                        )
+                }
+                .background(Color.white.opacity(0.4))
+                .cornerRadius(10)
+                .padding()
             }
-            .mapStyle(.standard)
+            
         )
     }
     
     private func loadEvents() {
-        listOfEvents = getEventFromApi(category: nil, days: "100")
+        listOfEvents = getEventFromApi(category: nil, days: numDays)
         
         if listOfEvents.isEmpty {
                 print("No events were retrieved.")
@@ -71,9 +104,7 @@ struct EventMap: View {
                     latitude: firstGeometry.coordinates[1],
                     longitude: firstGeometry.coordinates[0]
                 ),
-                span: MKCoordinateSpan(
-                    latitudeDelta: 0.05,
-                    longitudeDelta: 0.05
+                span: MKCoordinateSpan(latitudeDelta: 180.0, longitudeDelta: 360.0
                 )
             ))
         } else {

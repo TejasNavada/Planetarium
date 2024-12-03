@@ -28,7 +28,7 @@ public func getAPODFromApi() -> APODStruct? {
     if let jsonData = jsonDataFetchedFromApi {
         jsonDataFromApi = jsonData
     } else {
-        return nil
+        return APODStruct(title: "title", date_created: "date_created", photo_description: "photo_description", image_url: "image_url")
     }
 
     /*
@@ -64,7 +64,7 @@ public func getAPODFromApi() -> APODStruct? {
             return picture
                
                 
-        } else { return nil }
-    } catch { return  nil}
+        } else { return APODStruct(title: "title", date_created: "date_created", photo_description: "photo_description", image_url: "image_url") }
+    } catch { return  APODStruct(title: "title", date_created: "date_created", photo_description: "photo_description", image_url: "image_url")}
   
 }

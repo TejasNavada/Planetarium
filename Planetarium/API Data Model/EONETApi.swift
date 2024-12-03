@@ -11,7 +11,7 @@ import Foundation
 var foundEventsList = [EventStruct]()
 
 public func getEventFromApi(category: String?, days: String) -> [EventStruct] {
-    
+    print(days)
     foundEventsList = [EventStruct]()
     
     var apiUrlString = "https://eonet.gsfc.nasa.gov/api/v3/events?days=\(days)"
