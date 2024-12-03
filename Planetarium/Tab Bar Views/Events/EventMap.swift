@@ -19,7 +19,7 @@ struct EventMap: View {
     @State private var listOfEvents: [EventStruct] = []
     @State private var mapPosition: MapCameraPosition = .automatic
     @State private var selectedCategory: String = ""
-    @State private var daysFilter: String = "100"
+    @State private var daysFilter: String = "20"
     @FocusState private var isFieldFocused: Bool
     
     let categories = ["All", "Earthquakes", "Volcanoes", "Wildfires", "Drought", "Floods", "Hurricanes"]
