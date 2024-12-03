@@ -16,7 +16,7 @@ struct ContentView: View {
                 //Home()
             }
             Tab("Puzzle", systemImage: "puzzlepiece.extension.fill") {
-                
+                PlayJigsawPuzzle()
             }
             Tab("Favorites", systemImage: "star") {
                 FavoritesList()
