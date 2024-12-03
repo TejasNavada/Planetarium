@@ -17,13 +17,7 @@ struct PhotoStruct: Codable {
     var image_url: String       // Photo URL
     
     
-    enum CodingKeys: String, CodingKey {
-            case center
-            case title
-            case date_created
-            case photo_description
-            case image_url
-        }
+
 }
 
 /*

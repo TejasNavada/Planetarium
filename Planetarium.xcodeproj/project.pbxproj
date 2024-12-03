@@ -92,7 +92,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
-				ORGANIZATIONNAME = "Tejas Navada";
+				ORGANIZATIONNAME = "Ryan Trieu";
 				TargetAttributes = {
 					B7D304BE2CFD37B100D9D650 = {
 						CreatedOnToolsVersion = 16.1;
