@@ -85,5 +85,5 @@ public func getEventFromApi(category: String?, days: String) -> [EventStruct] {
         return []
     }
     
-    return []
+    return foundEventsList
 }

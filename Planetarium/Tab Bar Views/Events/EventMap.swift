@@ -57,21 +57,33 @@ struct EventMap: View {
     
     private func loadEvents() {
         listOfEvents = getEventFromApi(category: nil, days: "100")
-            
-            if let firstEvent = listOfEvents.first,
-               let firstGeometry = firstEvent.geometry.first {
-                mapPosition = .region(MKCoordinateRegion(
-                    center: CLLocationCoordinate2D(
-                        latitude: firstGeometry.coordinates[1],
-                        longitude: firstGeometry.coordinates[0]
-                    ),
-                    span: MKCoordinateSpan(
-                        latitudeDelta: 5.0,
-                        longitudeDelta: 5.0
-                    )
-                ))
+        
+        if listOfEvents.isEmpty {
+                print("No events were retrieved.")
+            } else {
+                print("\(listOfEvents.count) events retrieved.")
             }
+        
+        if let firstEvent = listOfEvents.first,
+           let firstGeometry = firstEvent.geometry.first {
+            mapPosition = .region(MKCoordinateRegion(
+                center: CLLocationCoordinate2D(
+                    latitude: firstGeometry.coordinates[1],
+                    longitude: firstGeometry.coordinates[0]
+                ),
+                span: MKCoordinateSpan(
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.05
+                )
+            ))
+        } else {
+            mapPosition = .region(MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0),
+                span: MKCoordinateSpan(latitudeDelta: 180.0, longitudeDelta: 360.0)
+            ))
         }
+    }
+
 }
 
 struct EventAnnotationView: View {
