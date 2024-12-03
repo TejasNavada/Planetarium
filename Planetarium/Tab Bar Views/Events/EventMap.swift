@@ -111,14 +111,46 @@ struct EventMap: View {
         }
         
         return AnyView(
-            Map(position: $mapPosition) {
-                ForEach(annotations) { loc in
-                    Annotation(loc.event.title, coordinate: loc.coordinate) {
-                        EventAnnotationView(event: loc.event)
+            ZStack(alignment: .topLeading){
+                Map(position: $mapPosition) {
+                    ForEach(annotations) { loc in
+                        Annotation(loc.event.title, coordinate: loc.coordinate) {
+                            EventAnnotationView(event: loc.event)
+                        }
                     }
                 }
+                .mapStyle(.standard)
+                HStack(alignment: .firstTextBaseline) {
+                    Text("Enter Days into the past")
+                        .padding(.top)
+                        .padding(.leading)
+                    TextField("Enter Number of Days", text: $numDays)
+                        .keyboardType(.numberPad)
+                        .onChange(of: numDays) { newValue in
+                            // Validate that the input is a valid number
+                            if let _ = Int(newValue) {
+                                // Valid number, do nothing
+                                loadEvents()
+                            } else {
+                                // Invalid input, reset the value to the previous valid input
+                                numDays = String(newValue.dropLast())
+                            }
+                        }
+                        .padding()
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .background(Color.clear)  // Transparent background
+                        .frame(maxWidth: 60)
+                        .cornerRadius(8) // Add rounded corners
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.white, lineWidth: 2) //  Add border for visibility
+                        )
+                }
+                .background(Color.white.opacity(0.4))
+                .cornerRadius(10)
+                .padding()
             }
-            .mapStyle(.standard)
+            
         )
     }
     
