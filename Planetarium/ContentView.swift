@@ -13,7 +13,7 @@ struct ContentView: View {
     var body: some View {
         TabView {
             Tab("Home", systemImage: "house") {
-                //Home()
+                Home()
             }
             Tab("Puzzle", systemImage: "puzzlepiece.extension.fill") {
                 

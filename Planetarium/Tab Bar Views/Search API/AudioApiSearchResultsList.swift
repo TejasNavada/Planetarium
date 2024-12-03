@@ -11,7 +11,7 @@ struct AudioApiSearchResultsList: View {
     var body: some View {
         List {
             ForEach(foundAudiosList, id:\.title) { aAudio in
-                NavigationLink(destination: ApiAudioDetails(audio: aAudio)) {
+                NavigationLink(destination: ApiAudioDetails(audio: aAudio, audioPlayer: AudioPlayer() )) {
                     ApiAudioItem(audio: aAudio)
                 }
             }

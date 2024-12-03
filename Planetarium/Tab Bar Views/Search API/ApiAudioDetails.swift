@@ -22,7 +22,15 @@ struct ApiAudioDetails: View {
     
     
     @State private var showAlertMessage = false
-    
+    /*
+     ----------------------------------------
+     |   Publish-Subscribe Design Pattern   |
+     ----------------------------------------
+     Subscribe to state changes of the audioPlayer object instantiated from the
+     @Observable class AudioPlayer. Whenever the audioPlayer object state changes
+     refresh (update) this View, which means recompute the body var.
+     */
+    let audioPlayer: AudioPlayer
     var body: some View {
         
 
@@ -31,6 +39,24 @@ struct ApiAudioDetails: View {
             Form {
                 Section(header: Text("Audio Title")) {
                     Text(audio.title)
+                }
+                Section(header: Text("Play Voice Memo")) {
+                    Button(action: {
+                        if audioPlayer.isPlaying {
+                            audioPlayer.pauseAudioPlayer()
+                        } else {
+                            audioPlayer.startAudioPlayer()
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: audioPlayer.isPlaying ? "pause.fill" : "play.fill")
+                                .imageScale(.medium)
+                                .font(Font.title.weight(.regular))
+                            Text("Play Voice Memo")
+                                .font(.system(size: 16))
+                        }
+                        .foregroundColor(.blue)
+                    }
                 }
                 Section(header: Text("Audio Description")) {
                     Text(audio.audio_description)
@@ -70,6 +96,12 @@ struct ApiAudioDetails: View {
                 }, message: {
                   Text(alertMessage)
                 })
+            .onAppear() {
+                audioPlayer.createAudioPlayer(url: URL(string: audio.audio_url)!)
+            }
+            .onDisappear() {
+                audioPlayer.stopAudioPlayer()
+            }
             
         ) // End of AnyView
     }   // End of body var

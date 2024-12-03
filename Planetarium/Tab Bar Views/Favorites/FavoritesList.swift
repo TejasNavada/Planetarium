@@ -90,7 +90,7 @@ struct FavoritesList: View {
                 }
                 if(selectedIndex == 2){
                     ForEach(filteredListOfAudios) { aAudio in
-                        NavigationLink(destination: AudioDetails(audio: aAudio)) {
+                        NavigationLink(destination: AudioDetails(audio: aAudio, audioPlayer: AudioPlayer())) {
                             AudioItem(audio: aAudio)
                                 .alert(isPresented: $showConfirmation) {
                                     Alert(title: Text("Delete Confirmation"),

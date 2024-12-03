@@ -32,14 +32,14 @@ struct ApiPhotoDetails: View {
                 Section(header: Text("Photo Title")) {
                     Text(photo.title)
                 }
-                Section(header: Text("Photo Description")) {
-                    Text(photo.photo_description)
-                }
                 Section(header: Text("Photo Image")) {
                     getImageFromUrl(url: photo.image_url, defaultFilename: "ImageUnavailable")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(minWidth: 300, maxWidth: 500, alignment: .center)
+                }
+                Section(header: Text("Photo Description")) {
+                    Text(photo.photo_description)
                 }
                 
                 Section(header: Text("Photo Creation Date And Time")) {
