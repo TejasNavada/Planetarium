@@ -22,7 +22,7 @@ struct ContentView: View {
                 FavoritesList()
             }
             Tab("Events", systemImage: "globe.europe.africa.fill") {
-                
+                EventMap()
             }
             Tab("Database Images in Slider", systemImage: "photo.on.rectangle.angled.fill") {
                 Photos()
