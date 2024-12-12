@@ -34,16 +34,31 @@ struct PhotosGrid: View {
                         .navigationTitle("Tap Video to Play")
                         .toolbarTitleDisplayMode(.inline)
                     ){
-                        getImageFromUrl(url: aVideo.thumbnail_url, defaultFilename: "ImageUnavailable")
-                            .resizable()
-                            .scaledToFit()
-                            // Speak photo info on tap gesture
-                            // Display photo info on long press gesture
-                            .onLongPressGesture {
-                                showAlertMessage = true
-                                alertTitle = aVideo.title
-                                alertMessage = "This video was taken on \(aVideo.date_created) and is from the \(aVideo.center) Center"
-                            }
+                        if(aVideo.userAdded){
+                            getVideoThumbnailImage(url: documentDirectory.appendingPathComponent(aVideo.video_url))
+                                .resizable()
+                                .scaledToFit()
+                                // Speak photo info on tap gesture
+                                // Display photo info on long press gesture
+                                .onLongPressGesture {
+                                    showAlertMessage = true
+                                    alertTitle = aVideo.title
+                                    alertMessage = "This video was taken on \(aVideo.date_created) and is from the \(aVideo.center) Center"
+                                }
+                        }
+                        else{
+                            getImageFromUrl(url: aVideo.thumbnail_url, defaultFilename: "ImageUnavailable")
+                                .resizable()
+                                .scaledToFit()
+                                // Speak photo info on tap gesture
+                                // Display photo info on long press gesture
+                                .onLongPressGesture {
+                                    showAlertMessage = true
+                                    alertTitle = aVideo.title
+                                    alertMessage = "This video was taken on \(aVideo.date_created) and is from the \(aVideo.center) Center"
+                                }
+                        }
+                        
                     }
                     
                     

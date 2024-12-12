@@ -138,7 +138,7 @@ struct AddFavorite: View {
                         Toggle("Use Camera", isOn: camera)
                         Toggle("Use Photo Library", isOn: photoLibrary)
                         
-                        Button("Get Photo") {
+                        Button("Get " + mediaType[selectedIndex]) {
                             if selectedIndex == 0 {
                                 showImagePicker = true
                             }
@@ -586,14 +586,12 @@ struct AddFavorite: View {
         //-----------------------------
         let date = Date()
         
-        // Instantiate a DateFormatter object
-        let dateFormatter = DateFormatter()
-
-        // Set the date format to yyyy-MM-dd at HH:mm:ss
-        dateFormatter.dateFormat = "yyyy-MM-dd' at 'HH:mm:ss"
-        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
         // Format current date and time as above and convert it to String
-        let currentDateTime = dateFormatter.string(from: date)
+        let currentDateTime = formatter.string(from: date)
+        
         
 
         

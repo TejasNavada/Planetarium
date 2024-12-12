@@ -42,9 +42,17 @@ struct Photos: View {
                                     .font(.headline)
                                     .multilineTextAlignment(.center)
                                     .padding()
-                                getImageFromUrl(url: photo.image_url, defaultFilename: "ImageUnavailable")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
+                                if(photo.userAdded){
+                                    getImageFromDocumentDirectory(filename: photo.image_url.components(separatedBy: ".")[0], fileExtension: photo.image_url.components(separatedBy: ".")[1], defaultFilename: "ImageUnavailable")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                }
+                                else{
+                                    getImageFromUrl(url: photo.image_url, defaultFilename: "ImageUnavailable")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                }
+                                
                             }
                         }
                     }   // End of TabView
