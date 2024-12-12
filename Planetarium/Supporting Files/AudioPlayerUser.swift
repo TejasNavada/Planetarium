@@ -1,8 +1,8 @@
 //
-//  AudioPlayer.swift
+//  AudioPlayerUser.swift
 //  Planetarium
 //
-//  Created by Osman Balci and Tejas Navada on 12/04/24.
+//  Created by Osman Balci and Tejas Navada on 7/19/24.
 //  Copyright © 2024 Osman Balci. All rights reserved.
 //
 
@@ -11,10 +11,10 @@ import Observation
 import AVFoundation
 
 // Global variable
-var playerOfAudio: AVPlayer!
+var playerOfAudioUser: AVAudioPlayer!
  
 @Observable
-class AudioPlayer: NSObject, AVAudioPlayerDelegate {
+class AudioPlayerUser: NSObject, AVAudioPlayerDelegate {
    
     // Instance Variable
     var isPlaying = false
@@ -48,11 +48,28 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
      ******************************************************************
      */
     func createAudioPlayer(url: URL) {
-            let playerItem = AVPlayerItem(url: url)
-        NotificationCenter.default.addObserver(self, selector: Selector(("playerDidFinishPlaying:")), name: AVPlayerItem.didPlayToEndTimeNotification, object: nil)
-            playerOfAudio = AVPlayer.init(playerItem: playerItem)
+        do {
+            playerOfAudioUser = try AVAudioPlayer(contentsOf: url)
+            playerOfAudioUser.prepareToPlay()
+        } catch {
+            print(url)
+            print("Unable to create AVAudioPlayer from URL!")
+        }
     }
  
+    /*
+     ************************************************************
+     CREATE Audio Player to play the audio contained in audioData
+     ************************************************************
+     */
+    func createAudioPlayer(audioData: Data) {
+        do {
+            playerOfAudioUser = try AVAudioPlayer(data: audioData)
+            playerOfAudioUser!.prepareToPlay()
+        } catch {
+            print("Unable to create AVAudioPlayer from audioData!")
+        }
+    }
    
     /*
      ***********************
@@ -73,11 +90,13 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             print("Unable to route audio to the built-in speaker!")
         }
        
-        if let player = playerOfAudio {
+        if let player = playerOfAudioUser {
             /*
              Make this class to be a delegate for the AVAudioPlayerDelegate protocol so that
              we can implement the audioPlayerDidFinishPlaying protocol method below.
              */
+            player.delegate = self
+           
             player.play()
             isPlaying = true
         }
@@ -89,7 +108,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
      ***********************
      */
     func pauseAudioPlayer() {
-        if let player = playerOfAudio {
+        if let player = playerOfAudioUser {
             player.pause()
             isPlaying = false
         }
@@ -101,8 +120,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
      **********************
      */
     func stopAudioPlayer() {
-        if let player = playerOfAudio {
-            player.pause()
+        if let player = playerOfAudioUser {
+            player.stop()
             isPlaying = false
         }
     }
@@ -114,8 +133,11 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
      */
     
     // Set isPlaying to false when the Audio Player finishes playing.
-    func audioPlayerDidFinishPlaying() {
-        isPlaying = false
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag {
+            isPlaying = false
+        }
     }
    
 }
+

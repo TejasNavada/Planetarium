@@ -14,7 +14,9 @@ struct PlanetariumApp: App {
     init() {
         createDatabase()
         
-        setUpJigsawPuzzle() 
+        setUpJigsawPuzzle()
+        
+        getPermissionForLocation()
     }
     @AppStorage("darkMode") private var darkMode = false
     

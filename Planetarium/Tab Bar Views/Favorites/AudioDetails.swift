@@ -30,6 +30,7 @@ struct AudioDetails: View {
      refresh (update) this View, which means recompute the body var.
      */
     let audioPlayer: AudioPlayer
+    let audioPlayerUser: AudioPlayerUser
     
     var body: some View {
         
@@ -42,14 +43,24 @@ struct AudioDetails: View {
                 }
                 Section(header: Text("Play Voice Memo")) {
                     Button(action: {
-                        if audioPlayer.isPlaying {
-                            audioPlayer.pauseAudioPlayer()
-                        } else {
-                            audioPlayer.startAudioPlayer()
+                        if(audio.userAdded){
+                            if audioPlayerUser.isPlaying {
+                                audioPlayerUser.pauseAudioPlayer()
+                            } else {
+                                audioPlayerUser.startAudioPlayer()
+                            }
                         }
+                        else{
+                            if audioPlayer.isPlaying {
+                                audioPlayer.pauseAudioPlayer()
+                            } else {
+                                audioPlayer.startAudioPlayer()
+                            }
+                        }
+                        
                     }) {
                         HStack {
-                            Image(systemName: audioPlayer.isPlaying ? "pause.fill" : "play.fill")
+                            Image(systemName: (audioPlayer.isPlaying || audioPlayerUser.isPlaying) ? "pause.fill" : "play.fill")
                                 .imageScale(.medium)
                                 .font(Font.title.weight(.regular))
                             Text("Play Voice Memo")
@@ -81,14 +92,20 @@ struct AudioDetails: View {
                 })
             .onAppear() {
                 if(audio.userAdded){
-                    audioPlayer.createAudioPlayer(url: documentDirectory.appendingPathComponent(audio.audio_url))
+                    audioPlayerUser.createAudioPlayer(url: documentDirectory.appendingPathComponent(audio.audio_url))
                 }
                 else{
                     audioPlayer.createAudioPlayer(url: URL(string: audio.audio_url)!)
                 }
             }
             .onDisappear() {
-                audioPlayer.stopAudioPlayer()
+                if(audio.userAdded){
+                    audioPlayerUser.stopAudioPlayer()
+                }
+                else{
+                    audioPlayer.stopAudioPlayer()
+                }
+                
             }
             
         ) // End of AnyView

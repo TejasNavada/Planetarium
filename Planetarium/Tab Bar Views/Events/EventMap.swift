@@ -114,6 +114,11 @@ struct EventMap: View {
                         EventAnnotationView(event: loc.event)
                     }
                 }
+                Annotation("Current Location", coordinate: getUsersCurrentLocation()){
+                    Image(systemName: "figure.wave")
+                        .imageScale(.medium)
+                        .font(Font.title.weight(.regular))
+                }
             }
                 .mapStyle(.hybrid(elevation: .realistic))
         )

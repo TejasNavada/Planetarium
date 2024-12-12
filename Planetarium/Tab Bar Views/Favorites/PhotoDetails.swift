@@ -38,6 +38,20 @@ struct PhotoDetails: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(minWidth: 300, maxWidth: 500, alignment: .center)
+                            .contextMenu {
+                                // Context Menu Item
+                                Button(action: {
+                                    // Copy the apartment photo to universal clipboard for pasting elsewhere
+                                    UIPasteboard.general.image = UIImage(named: photo.image_url)
+                                    
+                                    showAlertMessage = true
+                                    alertTitle = "Photo is Copied to Clipboard"
+                                    alertMessage = "You can paste it on your iPhone, iPad, Mac laptop or Mac desktop each running under your Apple ID"
+                                }) {
+                                    Image(systemName: "doc.on.doc")
+                                    Text("Copy Image")
+                                }
+                            }
                     }
                 }
                 else{
@@ -46,6 +60,40 @@ struct PhotoDetails: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(minWidth: 300, maxWidth: 500, alignment: .center)
+                            .contextMenu {
+                                // Context Menu Item
+                                Button(action: {
+                                    // Copy the apartment photo to universal clipboard for pasting elsewhere
+                                    DispatchQueue.global().async {
+
+                                            // Create url from string address
+                                        guard let url = URL(string: photo.image_url) else {
+                                            return
+                                        }
+
+                                        // Create data from url (You can handle exeption with try-catch)
+                                        guard let data = try? Data(contentsOf: url) else {
+                                            return
+                                        }
+
+                                        // Create image from data
+                                        guard let image = UIImage(data: data) else {
+                                            
+                                            return
+                                        }
+                                        UIPasteboard.general.image = image
+
+                                            
+                                    }
+                                    
+                                    showAlertMessage = true
+                                    alertTitle = "Photo is Copied to Clipboard"
+                                    alertMessage = "You can paste it on your iPhone, iPad, Mac laptop or Mac desktop each running under your Apple ID"
+                                }) {
+                                    Image(systemName: "doc.on.doc")
+                                    Text("Copy Image")
+                                }
+                            }
                     }
                 }
                 
