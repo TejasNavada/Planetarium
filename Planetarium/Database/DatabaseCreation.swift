@@ -1,9 +1,8 @@
 //
 //  DatabaseCreation.swift
-//  PhotosVideos
+//  Planetarium
 //
-//  Created by Osman Balci on 8/14/24.
-//  Copyright © 2024 Osman Balci. All rights reserved.
+//  Created by Tejas Navada on 12/11/24.
 //
 
 import SwiftUI

@@ -1,9 +1,9 @@
 
 //
-//  ApiPhotoDetails.swift
-//  BooksPhotos
+//  AudioDetails.swift
+//  Planetarium
 //
-//  Created by Tejas Navada on 11/05/24.
+//  Created by Tejas Navada on 11/20/24.
 //  Copyright © 2024 Tejas Navada. All rights reserved.
 //
 

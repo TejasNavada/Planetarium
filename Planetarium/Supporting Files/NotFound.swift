@@ -1,6 +1,6 @@
 //
 //  NotFound.swift
-//  BooksPhotos
+//  Planetarium
 //
 //  Created by Osman Balci on 10/20/24.
 //  Copyright © 2024 Osman Balci. All rights reserved.

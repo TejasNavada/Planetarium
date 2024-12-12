@@ -1,9 +1,8 @@
 //
 //  Photos.swift
-//  Blacksburg
+//  Planetarium
 //
-//  Created by Osman Balci on 9/4/24.
-//  Copyright © 2024 Osman Balci. All rights reserved.
+//  Created by Tejas Navada on 12/4/24.
 //
 
 import SwiftUI

@@ -1,8 +1,8 @@
 //
 //  Home.swift
-//  BooksPhotos
+//  Planetarium
 //
-//  Created by Tejas Navada 11/04/2024
+//  Created by Tejas Navada 11/24/2024
 //
 
 import SwiftUI

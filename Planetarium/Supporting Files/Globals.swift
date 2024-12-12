@@ -1,6 +1,6 @@
 //
 //  Globals.swift
-//  BooksPhotos
+//  Planetarium
 //
 //  Created by Tejas Navada on 11/05/24.
 //

@@ -1,8 +1,8 @@
 //
-//  ToDoTasksList.swift
-//  PIM
+//  Favorites.swift
+//  Planetarium
 //
-//  Created by Tejas Navada on 10/14/24.
+//  Created by Tejas Navada on 10/24/24.
 //  Copyright © 2024 Tejas Navada. All rights reserved.
 //
 
