@@ -94,7 +94,7 @@ struct VideoDetails: View {
                 
             }   // End of Form
             .font(.system(size: 14))
-            .navigationTitle("Found Video Details")
+            .navigationTitle("Video Details")
             .toolbarTitleDisplayMode(.inline)
             .alert(alertTitle, isPresented: $showAlertMessage, actions: {
                   Button("OK") {}

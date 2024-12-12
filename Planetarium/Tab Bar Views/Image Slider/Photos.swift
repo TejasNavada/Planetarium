@@ -55,7 +55,7 @@ struct Photos: View {
                     }
                     
                 }   // End of VStack
-                .navigationTitle("Blacksburg Photos")
+                .navigationTitle("Favorite Photos")
                 .toolbarTitleDisplayMode(.inline)
                 .onAppear() {
                     selectedBgColor = selectedColor

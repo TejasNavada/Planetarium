@@ -210,7 +210,7 @@ struct AddFavorite: View {
             
         }   // End of Form
         .font(.system(size: 14))
-        .navigationTitle("Add New Multimedia Note")
+        .navigationTitle("Add New Favorite Media")
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -219,8 +219,8 @@ struct AddFavorite: View {
                         saveNewMultimediaToDatabase()
                         
                         showAlertMessage = true
-                        alertTitle = "Multimedia Note Added!"
-                        alertMessage = "New multimedia note is successfully added to database."
+                        alertTitle = "Favorite media Added!"
+                        alertMessage = "New favorite media is successfully added to database."
                     } else {
                         showAlertMessage = true
                         alertTitle = "Missing Input Data!"

@@ -83,7 +83,7 @@ struct AudioDetails: View {
                 
             }   // End of Form
             .font(.system(size: 14))
-            .navigationTitle("Found Audio Details")
+            .navigationTitle("Audio Details")
             .toolbarTitleDisplayMode(.inline)
             .alert(alertTitle, isPresented: $showAlertMessage, actions: {
                   Button("OK") {}
