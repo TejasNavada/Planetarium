@@ -94,7 +94,7 @@ struct ApiPhotoDetails: View {
          */
         
         // Instantiate a new Photo object and dress it up
-        let newPhoto = Photo(center: photo.center, title: photo.title, date_created: photo.date_created, photo_description: photo.photo_description, image_url: photo.image_url)
+        let newPhoto = Photo(center: photo.center, title: photo.title, date_created: photo.date_created, photo_description: photo.photo_description, image_url: photo.image_url, userAdded: false)
         
         // ❎ Insert it into the database context
         modelContext.insert(newPhoto)

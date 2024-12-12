@@ -109,7 +109,7 @@ struct ApiVideoDetails: View {
          */
         
         // Instantiate a new Photo object and dress it up
-        let newVideo = Video(center: video.center, title: video.title, date_created: video.date_created, video_description: video.video_description, video_url: video.video_url, thumbnail_url: video.thumbnail_url, captions_url: video.captions_url)
+        let newVideo = Video(center: video.center, title: video.title, date_created: video.date_created, video_description: video.video_description, video_url: video.video_url, thumbnail_url: video.thumbnail_url, captions_url: video.captions_url, userAdded: false)
         
         // ❎ Insert it into the database context
         modelContext.insert(newVideo)

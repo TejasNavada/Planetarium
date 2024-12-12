@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import AVFoundation
 
 // Global constant
 let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -163,3 +164,184 @@ public func getImageFromUrl(url: String, defaultFilename: String) -> Image {
 }
 
 
+/*
+******************************************************************
+MARK: - Copy Image File from Assets.xcassets to Document Directory
+******************************************************************
+*/
+public func copyImageFileFromAssetsToDocumentDirectory(filename: String, fileExtension: String) {
+   
+    /*
+     UIImage(named: filename)   gets image from Assets.xcassets as UIImage
+     Image("filename")          gets image from Assets.xcassets as Image
+     */
+   
+    //--------------
+    // PNG File Copy
+    //--------------
+   
+    if fileExtension == "png" {
+        if let imageInAssets = UIImage(named: filename) {
+           
+            // pngData() returns a Data object containing the specified image in PNG format
+            if let pngImageData = imageInAssets.pngData() {
+                let fileUrlInDocDir = documentDirectory.appendingPathComponent("\(filename).png")
+                do {
+                    try pngImageData.write(to: fileUrlInDocDir)
+                } catch {
+                    print("Unable to write file \(filename).png to document directory!")
+                }
+            } else {
+                print("Image file \(filename).png cannot be converted to PNG data format!")
+            }
+        } else {
+            print("Image file \(filename).png does not exist in Assets.xcassets!")
+        }
+    }
+   
+    //---------------
+    // JPEG File Copy
+    //---------------
+   
+    if fileExtension == "jpg" {
+        if let imageInAssets = UIImage(named: filename) {
+            /*
+             jpegData() returns a Data object containing the specified image
+             in JPEG format with 100% compression quality
+             */
+            if let jpegImageData = imageInAssets.jpegData(compressionQuality: 1.0) {
+                let fileUrlInDocDir = documentDirectory.appendingPathComponent("\(filename).jpg")
+                do {
+                    try jpegImageData.write(to: fileUrlInDocDir)
+                } catch {
+                    print("Unable to write file \(filename).jpg to document directory!")
+                }
+            } else {
+                print("Image file \(filename).jpg cannot be converted to JPEG data format!")
+            }
+        } else {
+            print("Image file \(filename).jpg does not exist in Assets.xcassets!")
+        }
+    }
+   
+}
+
+/*
+******************************************************
+MARK: Copy File from Main Bundle to Document Directory
+******************************************************
+*/
+public func copyFileFromMainBundleToDocumentDirectory(filename: String, fileExtension: String) {
+   
+    if let fileUrlInMainBundle = Bundle.main.url(forResource: filename, withExtension: fileExtension) {
+       
+        let fileUrlInDocDir = documentDirectory.appendingPathComponent("\(filename).\(fileExtension)")
+       
+        do {
+            try FileManager.default.copyItem(at: fileUrlInMainBundle, to: fileUrlInDocDir)
+        } catch {
+            print("Unable to copy file \(filename).\(fileExtension) from main bundle to document directory!")
+        }
+       
+    } else {
+        print("The file \(filename).\(fileExtension) does not exist in main bundle!")
+    }
+}
+
+/*
+*****************************************
+MARK: - Get Image from Document Directory
+*****************************************
+*/
+public func getImageFromDocumentDirectory(filename: String, fileExtension: String, defaultFilename: String) -> Image {
+ 
+    var imageData: Data?
+   
+    let urlOfImageInDocDir = documentDirectory.appendingPathComponent("\(filename).\(fileExtension)")
+       
+    do {
+        // Try to get the image data from urlOfImageInDocDir
+        imageData = try Data(contentsOf: urlOfImageInDocDir, options: NSData.ReadingOptions.mappedIfSafe)
+    } catch {
+        imageData = nil
+    }
+   
+    // Unwrap imageData to see if it has a value
+    if let imageDataObtained = imageData {
+       
+        // Create a UIImage object from imageDataObtained
+        let uiImage = UIImage(data: imageDataObtained)
+       
+        // Unwrap uiImage to see if it has a value
+        if let imageObtained = uiImage {
+            // Convert UIImage to Image and return
+            return Image(uiImage: imageObtained)
+        } else {
+            return Image(defaultFilename)
+        }
+    } else {
+        /*
+         Image file with name 'defaultFilename' is returned if the image with 'filename'
+         cannot be obtained. Image file 'defaultFilename' must be given in Assets.xcassets
+         */
+        return Image(defaultFilename)
+    }
+   
+}
+
+/*
+*****************************************
+MARK: Get Thumbnail Image of a Video File
+*****************************************
+*/
+public func getVideoThumbnailImage(url: URL) -> Image {
+    
+    let urlAsset = AVURLAsset(url: url, options: nil)
+    let assetImageGenerator = AVAssetImageGenerator(asset: urlAsset)
+    assetImageGenerator.appliesPreferredTrackTransform = true
+    assetImageGenerator.apertureMode = .encodedPixels
+
+    let cmTime = CMTime(seconds: 1, preferredTimescale: 60)
+    var thumbnailCGImage: CGImage?
+    var errorOccurred = false
+    
+    let semaphore = DispatchSemaphore(value: 0)
+
+    assetImageGenerator.generateCGImageAsynchronously(for: cmTime) { generatedImage, timeGenerated, error in
+        if error == nil {
+            if let cgVideoImage = generatedImage {
+                thumbnailCGImage = cgVideoImage
+            } else {
+                errorOccurred = true
+            }
+        } else {
+            errorOccurred = true
+        }
+        semaphore.signal()
+        return
+    }
+    
+    _ = semaphore.wait(timeout: .now() + 30)
+    
+    /*
+     ---------------------------------------------------------------------------
+     Purple message "Thread running at User-interactive quality-of-service class
+     waiting on a lower QoS thread running at Default quality-of-service class."
+     can either be ignored or disabled by following the steps below in Xcode:
+     (1) Select Product > Scheme > Edit Scheme to display the scheme editor.
+     (2) Select the Run schemes, navigate to the Diagnostics section, and
+         unselect the Thread Performance Checker tool checkbox.
+     ---------------------------------------------------------------------------
+     */
+
+    if errorOccurred {
+        return Image("ImageUnavailable")
+    }
+    
+    if let thumbnailImage = thumbnailCGImage {
+        let uiImage = UIImage(cgImage: thumbnailImage)
+        return Image(uiImage: uiImage)
+    }
+
+    return Image("ImageUnavailable")
+}

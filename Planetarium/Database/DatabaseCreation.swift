@@ -44,6 +44,14 @@ public func createDatabase() {
     
     if !listOfAllPhotosInDatabase.isEmpty {
         print("Database has already been created!")
+//        do {
+//            try modelContext.delete(model: Photo.self)
+//            try modelContext.delete(model: Video.self)
+//            try modelContext.delete(model: Audio.self)
+//        } catch {
+//            print("Failed to clear all data.")
+//        }
+        
         return
     }
     
@@ -69,7 +77,7 @@ public func createDatabase() {
 
        
         
-        let newPhoto = Photo(center: aPhoto.center, title: aPhoto.title, date_created: aPhoto.date_created, photo_description: aPhoto.photo_description, image_url: aPhoto.image_url)
+        let newPhoto = Photo(center: aPhoto.center, title: aPhoto.title, date_created: aPhoto.date_created, photo_description: aPhoto.photo_description, image_url: aPhoto.image_url, userAdded: false)
         
         // Insert the new Photo object into the database
         modelContext.insert(newPhoto)
@@ -87,7 +95,7 @@ public func createDatabase() {
     for aVideo in videoStructList {
         
         // ❎ Instantiate a new Video object and dress it up
-        let newVideo = Video(center: aVideo.center, title: aVideo.title, date_created: aVideo.date_created, video_description: aVideo.video_description, video_url: aVideo.video_url, thumbnail_url: aVideo.thumbnail_url, captions_url: aVideo.captions_url)
+        let newVideo = Video(center: aVideo.center, title: aVideo.title, date_created: aVideo.date_created, video_description: aVideo.video_description, video_url: aVideo.video_url, thumbnail_url: aVideo.thumbnail_url, captions_url: aVideo.captions_url, userAdded: false)
         
         // ❎ Insert the new Video object into the database
         modelContext.insert(newVideo)
@@ -107,7 +115,7 @@ public func createDatabase() {
 
        
         
-        let newAudio = Audio(center: anAudio.center, title: anAudio.title, date_created: anAudio.date_created, audio_description: anAudio.audio_description, audio_url: anAudio.audio_url)
+        let newAudio = Audio(center: anAudio.center, title: anAudio.title, date_created: anAudio.date_created, audio_description: anAudio.audio_description, audio_url: anAudio.audio_url, userAdded: false)
         
         // Insert the new Photo object into the database
         modelContext.insert(newAudio)

@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Planetarium needs to use Speech Recognition to convert your speech into text.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Planetarium needs to access your Photo Library so that you can store a photo in it.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Planetarium needs to determine your location to display it on the map</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Planetarium needs to use the microphone to record your voice while taking a video or audio</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Planetarium needs to access your Photos library so that you can pick a photo!</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Planetarium needs to access your camera so that you can take a photo!</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

@@ -15,10 +15,19 @@ struct PhotoItem: View {
     
     var body: some View {
         HStack {
-            getImageFromUrl(url: photo.image_url, defaultFilename: "ImageUnavailable")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 50)
+            if (photo.userAdded){
+                getImageFromDocumentDirectory(filename: photo.image_url.components(separatedBy: ".")[0], fileExtension: photo.image_url.components(separatedBy: ".")[1], defaultFilename: "ImageUnavailable")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100)
+            }
+            else{
+                getImageFromUrl(url: photo.image_url, defaultFilename: "ImageUnavailable")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50)
+            }
+            
 
             VStack(alignment: .leading) {
                 Text(photo.title)

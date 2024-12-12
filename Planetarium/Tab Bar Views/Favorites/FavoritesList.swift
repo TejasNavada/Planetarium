@@ -118,7 +118,7 @@ struct FavoritesList: View {
                 
             }   // End of List
             .font(.system(size: 14))
-            .navigationTitle("To Do List")
+            .navigationTitle("Favorites List")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
                 // Place the Edit button on left side of the toolbar
@@ -127,11 +127,11 @@ struct FavoritesList: View {
                 }
                 
                 // Place the Add (+) button on right side of the toolbar
-//                ToolbarItem(placement: .topBarTrailing) {
-//                    NavigationLink(destination: AddToDoTask()) {
-//                        Image(systemName: "plus")
-//                    }
-//                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink(destination: AddFavorite()) {
+                        Image(systemName: "plus")
+                    }
+                }
             }   // End of toolbar
             
         }   // End of NavigationStack

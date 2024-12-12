@@ -15,10 +15,19 @@ struct VideoItem: View {
     
     var body: some View {
         HStack {
-            getImageFromUrl(url: video.thumbnail_url, defaultFilename: "ImageUnavailable")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 50)
+            if(video.userAdded){
+                getVideoThumbnailImage(url: documentDirectory.appendingPathComponent(video.video_url))
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50)
+            }
+            else{
+                getImageFromUrl(url: video.thumbnail_url, defaultFilename: "ImageUnavailable")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50)
+            }
+            
 
             VStack(alignment: .leading) {
                 Text(video.title)

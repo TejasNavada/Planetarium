@@ -32,12 +32,23 @@ struct PhotoDetails: View {
                 Section(header: Text("Photo Title")) {
                     Text(photo.title)
                 }
-                Section(header: Text("Photo Image")) {
-                    getImageFromUrl(url: photo.image_url, defaultFilename: "ImageUnavailable")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(minWidth: 300, maxWidth: 500, alignment: .center)
+                if (photo.userAdded){
+                    Section(header: Text("Photo Image")) {
+                        getImageFromDocumentDirectory(filename: photo.image_url.components(separatedBy: ".")[0], fileExtension: photo.image_url.components(separatedBy: ".")[1], defaultFilename: "ImageUnavailable")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(minWidth: 300, maxWidth: 500, alignment: .center)
+                    }
                 }
+                else{
+                    Section(header: Text("Photo Image")) {
+                        getImageFromUrl(url: photo.image_url, defaultFilename: "ImageUnavailable")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(minWidth: 300, maxWidth: 500, alignment: .center)
+                    }
+                }
+                
                 Section(header: Text("Photo Description")) {
                     Text(photo.photo_description)
                 }

@@ -115,7 +115,7 @@ struct EventMap: View {
                     }
                 }
             }
-            .mapStyle(.standard)
+                .mapStyle(.hybrid(elevation: .realistic))
         )
     }
     
@@ -181,15 +181,83 @@ struct EventAnnotationView: View {
                         .fixedSize(horizontal: true, vertical: false)
                 }
             }
-            Image(systemName: "mappin")
-                .imageScale(.large)
-                .font(Font.title.weight(.regular))
-                .foregroundColor(.red)
-                .onTapGesture {
-                    withAnimation(.easeInOut) {
-                        showEventDetails.toggle()
+            if event.categories[0].title == "Wildfires" {
+                Image(systemName: "flame.fill")
+                    .imageScale(.medium)
+                    .font(Font.title.weight(.regular))
+                    .foregroundColor(.orange)
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            showEventDetails.toggle()
+                        }
                     }
-                }
+            }
+            else if event.categories[0].title == "Volcanoes" {
+                Image(systemName: "mountain.2.fill")
+                    .imageScale(.medium)
+                    .font(Font.title.weight(.regular))
+                    .foregroundColor(.red)
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            showEventDetails.toggle()
+                        }
+                    }
+            }
+            else if event.categories[0].title == "Earthquakes" {
+                Image(systemName: "house.slash.fill")
+                    .imageScale(.medium)
+                    .font(Font.title.weight(.regular))
+                    .foregroundColor(.brown)
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            showEventDetails.toggle()
+                        }
+                    }
+            }
+            else if event.categories[0].title == "Drought" {
+                Image(systemName: "sun.haze.fill")
+                    .imageScale(.medium)
+                    .font(Font.title.weight(.regular))
+                    .foregroundColor(.yellow)
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            showEventDetails.toggle()
+                        }
+                    }
+            }
+            else if event.categories[0].title == "Drought" {
+                Image(systemName: "figure.water.fitness")
+                    .imageScale(.medium)
+                    .font(Font.title.weight(.regular))
+                    .foregroundColor(.blue)
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            showEventDetails.toggle()
+                        }
+                    }
+            }
+            else if event.categories[0].title == "Hurricanes" {
+                Image(systemName: "tropicalstorm")
+                    .imageScale(.medium)
+                    .font(Font.title.weight(.regular))
+                    .foregroundColor(.blue)
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            showEventDetails.toggle()
+                        }
+                    }
+            }
+            else{
+                Image(systemName: "mappin")
+                    .imageScale(.large)
+                    .font(Font.title.weight(.regular))
+                    .foregroundColor(.red)
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            showEventDetails.toggle()
+                        }
+                    }
+            }
         }
     }
 }

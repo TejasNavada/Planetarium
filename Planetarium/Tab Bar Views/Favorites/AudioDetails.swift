@@ -80,7 +80,12 @@ struct AudioDetails: View {
                   Text(alertMessage)
                 })
             .onAppear() {
-                audioPlayer.createAudioPlayer(url: URL(string: audio.audio_url)!)
+                if(audio.userAdded){
+                    audioPlayer.createAudioPlayer(url: documentDirectory.appendingPathComponent(audio.audio_url))
+                }
+                else{
+                    audioPlayer.createAudioPlayer(url: URL(string: audio.audio_url)!)
+                }
             }
             .onDisappear() {
                 audioPlayer.stopAudioPlayer()

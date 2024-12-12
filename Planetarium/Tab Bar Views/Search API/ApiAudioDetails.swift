@@ -120,7 +120,7 @@ struct ApiAudioDetails: View {
          */
         
         // Instantiate a new Photo object and dress it up
-        let newAudio = Audio(center: audio.center, title: audio.title, date_created: audio.date_created, audio_description: audio.audio_description, audio_url: audio.audio_url)
+        let newAudio = Audio(center: audio.center, title: audio.title, date_created: audio.date_created, audio_description: audio.audio_description, audio_url: audio.audio_url, userAdded: false)
         
         // ❎ Insert it into the database context
         modelContext.insert(newAudio)

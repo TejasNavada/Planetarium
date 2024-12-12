@@ -16,13 +16,15 @@ final class Photo {
     var date_created: String        // Date and time photo is taken or picked
     var photo_description: String        // photo description
     var image_url: String       // Photo URL
+    var userAdded: Bool
     
-    init(center: String, title: String, date_created: String, photo_description: String, image_url: String) {
+    init(center: String, title: String, date_created: String, photo_description: String, image_url: String, userAdded: Bool) {
         self.center = center
         self.title = title
         self.date_created = date_created
         self.photo_description = photo_description
         self.image_url = image_url
+        self.userAdded = userAdded
     }
 }
 
@@ -38,8 +40,9 @@ final class Video {
     var video_url: String       // Video URL
     var thumbnail_url: String       // thumbnail URL
     var captions_url: String       // captions URL
+    var userAdded: Bool
     
-    init(center: String, title: String, date_created: String, video_description: String, video_url: String, thumbnail_url: String, captions_url: String) {
+    init(center: String, title: String, date_created: String, video_description: String, video_url: String, thumbnail_url: String, captions_url: String, userAdded: Bool) {
         self.center = center
         self.title = title
         self.date_created = date_created
@@ -47,6 +50,7 @@ final class Video {
         self.video_url = video_url
         self.thumbnail_url = thumbnail_url
         self.captions_url = captions_url
+        self.userAdded = userAdded
     }
 }
 @Model
@@ -57,12 +61,14 @@ final class Audio {
     var date_created: String        // Date and time Audio is taken or picked
     var audio_description: String        // Audio description
     var audio_url: String       // Audio URL
+    var userAdded: Bool
     
-    init(center: String, title: String, date_created: String, audio_description: String, audio_url: String) {
+    init(center: String, title: String, date_created: String, audio_description: String, audio_url: String, userAdded: Bool) {
         self.center = center
         self.title = title
         self.date_created = date_created
         self.audio_description = audio_description
         self.audio_url = audio_url
+        self.userAdded = userAdded
     }
 }

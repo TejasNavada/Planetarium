@@ -31,27 +31,53 @@ struct VideoDetails: View {
                 Section(header: Text("Video Title")) {
                     Text(video.title)
                 }
-                Section(header: Text("Video Thumbnail")) {
-                    getImageFromUrl(url: video.thumbnail_url, defaultFilename: "ImageUnavailable")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(minWidth: 300, maxWidth: 500, alignment: .center)
-                }
-                Section(header: Text("Play Video")) {
-                    NavigationLink(destination:
-                                    VideoPlayer(player: AVPlayer(url: URL(string: video.video_url)!))
-                        .navigationTitle("Tap Video to Play")
-                        .toolbarTitleDisplayMode(.inline)
-                    ){
-                        HStack {
-                            Image(systemName: "play.rectangle.fill")
-                                .imageScale(.medium)
-                                .font(Font.title.weight(.regular))
-                            Text("Play Video")
-                                .font(.system(size: 16))
+                if (video.userAdded){
+                    Section(header: Text("Video Thumbnail")) {
+                        getVideoThumbnailImage(url: documentDirectory.appendingPathComponent(video.video_url))
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(minWidth: 300, maxWidth: 500, alignment: .center)
+                    }
+                    Section(header: Text("Play Video")) {
+                        NavigationLink(destination:
+                                        VideoPlayer(player: AVPlayer(url: documentDirectory.appendingPathComponent(video.video_url)))
+                            .navigationTitle("Tap Video to Play")
+                            .toolbarTitleDisplayMode(.inline)
+                        ){
+                            HStack {
+                                Image(systemName: "play.rectangle.fill")
+                                    .imageScale(.medium)
+                                    .font(Font.title.weight(.regular))
+                                Text("Play Video")
+                                    .font(.system(size: 16))
+                            }
                         }
                     }
                 }
+                else{
+                    Section(header: Text("Video Thumbnail")) {
+                        getImageFromUrl(url: video.thumbnail_url, defaultFilename: "ImageUnavailable")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(minWidth: 300, maxWidth: 500, alignment: .center)
+                    }
+                    Section(header: Text("Play Video")) {
+                        NavigationLink(destination:
+                                        VideoPlayer(player: AVPlayer(url: URL(string: video.video_url)!))
+                            .navigationTitle("Tap Video to Play")
+                            .toolbarTitleDisplayMode(.inline)
+                        ){
+                            HStack {
+                                Image(systemName: "play.rectangle.fill")
+                                    .imageScale(.medium)
+                                    .font(Font.title.weight(.regular))
+                                Text("Play Video")
+                                    .font(.system(size: 16))
+                            }
+                        }
+                    }
+                }
+                
                 Section(header: Text("Video Description")) {
                     Text(video.video_description)
                 }
